@@ -14,7 +14,7 @@ public interface SellerDao {
 
     public CarClassifieds read(String uuid);
     public List<BuyerServiceRequest> readBuyerServiceRequest(String car_alias);
-    public Buyers readBuyer(String phone);
+    public Buyers readBuyers(String phone);
 
 
 }

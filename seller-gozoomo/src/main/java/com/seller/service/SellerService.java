@@ -3,6 +3,7 @@ package com.seller.service;
 import com.seller.pojo.*;
 import com.seller.util.FreshDeskUpdate;
 import com.seller.util.MixPanelData;
+import org.apache.http.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.seller.dao.SellerDao;
 
@@ -42,7 +43,7 @@ public class SellerService {
             throw new WebApplicationException(errorResponse);
         }
 
-        return seller;
+        return carClassifieds;
 
     }
 
@@ -56,7 +57,7 @@ public class SellerService {
         Response errorResponse = Response.status(Response.Status.NOT_FOUND)
                 .entity(errorMessage)
                 .build();
-        List<BuyerServiceRequest> buyers = sellerDao.readBuyers(car_alias);
+        List<BuyerServiceRequest> buyers = sellerDao.readBuyerServiceRequest(car_alias);
 
         for (BuyerServiceRequest distinct : buyers) {
 
@@ -96,7 +97,7 @@ public class SellerService {
         Response errorResponse = Response.status(Response.Status.NOT_FOUND)
                 .entity(errorMessage)
                 .build();
-        Buyers buyers = sellerDao.readBuyer(phone);
+        Buyers buyers = sellerDao.readBuyers(phone);
 
 
         if (buyers == null) {
@@ -112,9 +113,10 @@ public class SellerService {
     @GET
     @Path("/update_price")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response logFreshDeskTicket(@QueryParam("phone") String phone) {
+    public String logFreshDeskTicket(@QueryParam("phone") String phone) {
 
-        return FreshDeskUpdate.logTicket(phone);
+        return FreshDeskUpdate.logTicket(phone).toString();
+        //return null;
 
     }
 
@@ -122,7 +124,8 @@ public class SellerService {
     @Path("/mixpanel_data")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getMixPanelData(@QueryParam("car_alias") String car_alias) {
-       return MixPanelData.getMixPanelData(car_alias);
+       //return MixPanelData.getMixPanelData(car_alias);
+        return null;
 
     }
 }

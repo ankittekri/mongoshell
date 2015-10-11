@@ -44,7 +44,7 @@ public class SellerDaoImpl implements SellerDao {
 
 
     @Override
-    public Buyers readBuyer(String phone) {
+    public Buyers readBuyers(String phone) {
 
         Datastore datastore = morphia.createDatastore(mongoClient, DB_NAME);
         return datastore.createQuery(Buyers.class).filter("phone =", phone).get();
