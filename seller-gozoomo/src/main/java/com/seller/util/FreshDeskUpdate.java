@@ -17,6 +17,20 @@ import java.io.UnsupportedEncodingException;
 import java.util.Base64.Encoder;
 import java.util.Base64;
 import javax.json.JsonBuilderFactory;
+import java.util.List;
+import java.util.ArrayList;
+
+import java.io.StringReader;
+import java.io.StringWriter;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import org.apache.http.HttpEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import com.seller.pojo.CustomUpdateResponse;
+import java.lang.Exception;
 
 
 /**
@@ -30,10 +44,11 @@ public class FreshDeskUpdate {
     public static final String freshDeskCredential = "user:password";
 
 
-    public static HttpResponse logTicket(String car_alias) {
+    public static List logTicket(String car_alias) {
 
        // String basicAuth = Base64.encodeBase64String(freshDeskCredential.getBytes());
         String basicAuth = (Base64.getEncoder().encode(freshDeskCredential.getBytes())).toString();
+        List statusList = new ArrayList();
         CloseableHttpResponse response= null;
        // JsonBuilderFactory factory = Json.createBuilderFactory(config);
         JsonObject ticket = Json.createObjectBuilder()
@@ -64,13 +79,27 @@ public class FreshDeskUpdate {
         try {
 
             response = httpclient.execute(httpPostRequest);
-        }
-        catch(IOException iOException){
+            HttpEntity httpEntity = response.getEntity();
+            String apiOutput = EntityUtils.toString(httpEntity);
+            statusList.add("status : "+ response.getStatusLine());
+            statusList.add("content : "+ apiOutput);
 
         }
-        finally{
-            return response;
-        }
+        catch(Exception e){
 
+        }
+        finally {
+            try {
+                response.close();
+            }
+
+            catch(IOException iOException){
+
+            }
+
+        }
+        return statusList;
     }
+
+
 }

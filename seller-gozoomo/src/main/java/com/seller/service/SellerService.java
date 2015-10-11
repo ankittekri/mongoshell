@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import org.apache.http.HttpResponse;
+import javax.ws.rs.core.GenericEntity;
+
 
 
 @Path("/getSellerDetails/{uuid}")
@@ -113,10 +116,11 @@ public class SellerService {
     @GET
     @Path("/update_price")
     @Produces(MediaType.APPLICATION_JSON)
-    public String logFreshDeskTicket(@QueryParam("phone") String phone) {
+    public Response logFreshDeskTicket(@QueryParam("phone") String phone) {
 
-        return FreshDeskUpdate.logTicket(phone).toString();
-        //return null;
+        List responseList = FreshDeskUpdate.logTicket(phone);
+
+        return Response.status(Response.Status.OK).entity(responseList.toString()).build();
 
     }
 
@@ -124,8 +128,10 @@ public class SellerService {
     @Path("/mixpanel_data")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getMixPanelData(@QueryParam("car_alias") String car_alias) {
-       //return MixPanelData.getMixPanelData(car_alias);
-        return null;
+
+        List responseList = MixPanelData.getMixPanelData(car_alias);
+
+        return Response.status(Response.Status.OK).entity(responseList.toString()).build();
 
     }
 }
